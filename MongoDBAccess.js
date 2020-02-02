@@ -162,9 +162,7 @@ const user_profiles = mongoose.model('user profiles', UserProfileSchema, 'user p
 const Team_invites = mongoose.model('team invites', TeamInviteSchema, 'team invites');
 const challenges = mongoose.model('challenges', ChallengeSchema, 'challenges');
 
-
-NameOfTeam = 'ballin'
-_username = 'balllover124'
+_username = 'balllover411'
 
 db.once('open', async function () {
 
@@ -179,10 +177,6 @@ db.once('open', async function () {
             teams.deleteOne({ _id: aTeam._id }).lean(true).exec((err, data) => {
               console.log('Err ::', err, 'data ::', data)
             })
-            //delete teamate
-            teammates.deleteMany({ Team: aTeam._id }).lean(true).exec((err, data) => {
-              console.log('Err ::', err, 'data ::', data)
-            })
             //delete team challenges
             challenges.deleteMany({ $or: [{ TeamOne: aTeam._id }, { TeamTwo: aTeam._id }] }).lean(true).exec((err, data) => {
               console.log('Err ::', err, 'data ::', data)
@@ -192,7 +186,10 @@ db.once('open', async function () {
               console.log('Err ::', err, 'data ::', data)
             })
           } else {
-            //make new captain
+            //make new team captain
+            teams.findByIdAndUpdate(aTeam._id, { TeamCaptain: newCaptian.User }, { useFindAndModify: false }).exec((err, data) => {
+              console.log('Err ::', err, 'data ::', data)
+            })            
           }
         })
       });
@@ -202,8 +199,10 @@ db.once('open', async function () {
     user_profiles.deleteOne({ _id: data._id }).lean(true).exec((err, data) => {
       console.log('Err ::', err, 'data ::', data)
     })
-
-
+    //delete teamate
+    teammates.deleteMany({ User: data._id }).lean(true).exec((err, data) => {
+      console.log('Err ::', err, 'data ::', data)
+    })    
   })
 });
 
