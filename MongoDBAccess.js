@@ -156,13 +156,28 @@ var ChallengeSchema = new Schema({
   }
 });
 
+var SubscriptionSchema = new Schema({
+  User: { type: Schema.Types.ObjectId, ref: 'User Profiles' },
+  Subscription: {
+    endpoint: {
+      type: String,
+      unique: true
+    },
+    keys: {
+      p256dh: String,
+      auth: String
+    }
+  }
+});
+
 const teams = mongoose.model('teams', teamsSchema, 'teams');
 const teammates = mongoose.model('teammates', teammatesSchema, 'teammates');
 const user_profiles = mongoose.model('user profiles', UserProfileSchema, 'user profiles');
 const Team_invites = mongoose.model('team invites', TeamInviteSchema, 'team invites');
 const challenges = mongoose.model('challenges', ChallengeSchema, 'challenges');
+const subscriptions = mongoose.model('Subscriptions', SubscriptionSchema, 'Subscriptions');
 
-_username = 'balllover411'
+_username = 'balllover149'
 
 db.once('open', async function () {
 
@@ -185,6 +200,9 @@ db.once('open', async function () {
             Team_invites.deleteMany({ Team: aTeam._id }).lean(true).exec((err, data) => {
               console.log('Err ::', err, 'data ::', data)
             })
+            //delte cloadinary photo, this is tanners code
+            //cloudinary_stuff.cloudinary.v2.uploader.destroy(team.TeamImageID)
+            
           } else {
             //make new team captain
             teams.findByIdAndUpdate(aTeam._id, { TeamCaptain: newCaptian.User }, { useFindAndModify: false }).exec((err, data) => {
@@ -194,6 +212,7 @@ db.once('open', async function () {
         })
       });
     })
+    //need to delete user cloadinary photo 
 
     //delete the player's profile
     user_profiles.deleteOne({ _id: data._id }).lean(true).exec((err, data) => {
@@ -201,6 +220,11 @@ db.once('open', async function () {
     })
     //delete teamate
     teammates.deleteMany({ User: data._id }).lean(true).exec((err, data) => {
+      console.log('Err ::', err, 'data ::', data)
+    })    
+    //delete subscriptions
+    //haven't teted yet
+    subscriptions.deleteMany({ User: data._id }).lean(true).exec((err, data) => {
       console.log('Err ::', err, 'data ::', data)
     })    
   })
