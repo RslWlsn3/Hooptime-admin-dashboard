@@ -37,28 +37,28 @@ ipcMain.on('item:add', function(e, item){
 //menu template
 const mainMenuTemplate = [
     {
-        label:'file'
+        label:'File'
     }
 ]
 
-//add developer tool if not in prod
-if(process.env.NODE_ENV !== 'production'){
-    mainMenuTemplate.push({
-        label: 'Developer Tools',
-        submenu:[
-            {
-                label: 'Toggle DevTools',
-                accelerator: process.platform == 'darwin' ? 'Comand+I' :
-                'Ctrl+I',
-                click(item, focusedWindow){
-                    focusedWindow.toggleDevTools();
-                }
-            },
-            {
-                role: 'reload'
-            }
+// //add developer tool if not in prod
+// if(process.env.NODE_ENV !== 'production'){
+//     mainMenuTemplate.push({
+//         label: 'Developer Tools',
+//         submenu:[
+//             {
+//                 label: 'Toggle DevTools',
+//                 accelerator: process.platform == 'darwin' ? 'Comand+I' :
+//                 'Ctrl+I',
+//                 click(item, focusedWindow){
+//                     focusedWindow.toggleDevTools();
+//                 }
+//             },
+//             {
+//                 role: 'reload'
+//             }
             
-        ]
-    })
-}
+//         ]
+//     })
+// }
 
