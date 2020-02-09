@@ -3,36 +3,36 @@
 
 <head>
     <title>Hooptime Admin Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> 
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
 </head>
 
 <body class="grey darken-4">
     <form class="container">
         <div class="row section">
-            <label class="white-text" >Enter Username</label>
+            <label class="white-text">Enter Username</label>
             <input class="grey lighten-5" type="text" id="item" name="searchTxt" autofocus>
             <a class="waves-effect waves-light red btn" type="submit1">Delete player</a>
-        </div>                
+        </div>
         <div class="row">
             <label class="white-text">Enter TeamID</label>
             <input class="grey lighten-5" type="text" id="item" name="searchTxt" autofocus>
             <a class="waves-effect waves-light red btn" type="submit2">Delete Team</a>
-        </div> 
+        </div>
         <div class="center-align row">
             <img src="images/hooptime_logo.png" width="30%" height="30%">
-        </div>               
-        
+        </div>
+
     </form>
 
-    <script >
+    <script>
         const electron = require('electron');
-        const {ipcRenderer} = electron;
-        
+        const { ipcRenderer } = electron;
+
         const form = document.querySelector('form');
         form.addEventListener('submit', submitForm);
 
-        function submitForm(e){
+        function submitForm(e) {
             e.preventDefault();
             const item = document.querySelector('#item').value;
             ipcRenderer.send('item:add', item)
