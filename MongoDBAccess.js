@@ -1,5 +1,7 @@
-const run = (_username) => {
-  var mongoose = require('mongoose');
+const cloudinary_stuff = require('./cloudify')
+var mongoose = require('mongoose');
+
+const run = (_username) => {  
   mongoose.connect('mongodb+srv://trachttanner:3F47QcLxnq8D6vJd@cluster0-5qwjf.mongodb.net/prod?retryWrites=true&w=majority', {
     useUnifiedTopology: true,
     useNewUrlParser: true,
@@ -199,8 +201,11 @@ const run = (_username) => {
               Team_invites.deleteMany({ Team: aTeam._id }).lean(true).exec((err, data) => {
                 console.log('Err ::', err, 'team invites ::', data)
               })
-              //delte cloadinary photo, this is tanners code
-              //cloudinary_stuff.cloudinary.v2.uploader.destroy(team.TeamImageID)
+              //delete team's cloadinary photo
+              console.log("team.TeamImageID = ", aTeam.TeamImageID)
+              cloudinary_stuff.cloudinary.v2.uploader.destroy(aTeam.TeamImageID, function(error,result) {
+                console.log("team's cloadinary photo", result, error) });
+                
 
             } else {
               //make new team captain
@@ -211,7 +216,10 @@ const run = (_username) => {
           })
         });
       })
-      //need to delete user cloadinary photo 
+      //delete user's cloudinary photo 
+      console.log("data.ProfileImageID = ", data.ProfileImageID)
+      cloudinary_stuff.cloudinary.v2.uploader.destroy(data.ProfileImageID, function(error,result) {
+        console.log("user's cloudinary photo", result, error) });
 
       //delete the player's profile
       user_profiles.deleteOne({ _id: data._id }).lean(true).exec((err, data) => {
@@ -221,12 +229,10 @@ const run = (_username) => {
       teammates.deleteMany({ User: data._id }).lean(true).exec((err, data) => {
         console.log('Err ::', err, 'teamate ::', data)
       })
-      //delete subscriptions
-      //haven't tested yet
+      //delete subscriptions      
       subscriptions.deleteMany({ User: data._id }).lean(true).exec((err, data) => {
         console.log('Err ::', err, 'subscriptions ::', data)
-        console.log(User, data._id)
-        console.log(subscriptions.User, data._id)
+
       })
     })
   });
